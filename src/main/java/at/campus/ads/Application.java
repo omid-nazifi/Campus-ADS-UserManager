@@ -1,8 +1,10 @@
 package at.campus.ads;
 
 import at.campus.ads.domain.User;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import at.campus.ads.persistence.UserDao;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A very simple class that shows how to load the driver, create a database,
@@ -13,17 +15,22 @@ public class Application {
     public static void main(String[] args) {
 
         User user = new User("Omid", "Nazifi", "onazifi", "pass");
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+        UserDao userDao = new UserDao();
+        Integer userId = userDao.save(user);
+        System.out.println("LOG [INFO] add new User" + user.toString());
+
+        Optional<User> optionalUser = userDao.get(userId);
+        optionalUser.ifPresent(value -> System.out.println("LOG [INFO] get user by id" + value.toString()));
+
+        user.setUsername("NewUserName");
+        userDao.update(user);
+        System.out.println("LOG [INFO] update current user with new username" + user.getUsername());
+
+        List<User> users = userDao.getAll();
+        users.forEach(us -> System.out.println("LOG [INFO]" + us.toString()));
+
+        userDao.delete(user);
+        System.out.println("LOG [INFO] delete user from DB");
 
     }
 
