@@ -58,8 +58,8 @@ public class Menu {
                 }
             case CHANGE_PASSWORD:
                 session.updateSessionExpireTime();
-                // TODO Change Password
-                break;
+                UserService.changePassword(session.getUser());
+                return PageEnum.HOME;
             case LOGOUT:
                 session.deleteUserFromSession();
         }
