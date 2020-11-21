@@ -27,7 +27,7 @@ public class Login {
     private String login() {
         String meldung="";
         UserDao userDao = new UserDao();
-        List<User> users = userDao.getAll();
+        List<User> users = userDao.findAll();
 
         for (User user : users)
         {

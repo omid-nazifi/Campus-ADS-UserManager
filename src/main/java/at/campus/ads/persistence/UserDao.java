@@ -2,11 +2,10 @@ package at.campus.ads.persistence;
 
 import at.campus.ads.HibernateUtil;
 import at.campus.ads.domain.User;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public Optional<User> get(int id) {
+    public Optional<User> findById(int id) {
         User selectedUser = null;
         HibernateUtil.getSessionFactory();
         try (Session session = factory.openSession()) {
@@ -37,7 +36,7 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> findAll() {
         List<User> users = new ArrayList<>();
         try (Session session = factory.openSession()) {
             users = (List<User>) session.createQuery("FROM User").list();
@@ -45,6 +44,29 @@ public class UserDao implements Dao<User> {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public Optional<User> findByUsername(String username) {
+        User selectedUser = null;
+        HibernateUtil.getSessionFactory();
+        try (Session session = factory.openSession()) {
+            Query query = session.createQuery("FROM User where username = :username");
+            query.setParameter("username", username);
+            selectedUser = (User) query.getSingleResult();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(selectedUser);
+    }
+
+    public boolean existsUsername(String username) {
+        Optional<User> user = findByUsername(username);
+        if(user.isPresent()) {
+            return true;
+        }
+        return false;
     }
 
     @Override
