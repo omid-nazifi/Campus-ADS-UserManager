@@ -3,10 +3,12 @@ package at.campus.ads;
 import at.campus.ads.domain.User;
 import at.campus.ads.logik.Login;
 import at.campus.ads.persistence.UserDao;
+import at.campus.ads.utils.ActionEnum;
+import at.campus.ads.utils.Menu;
+import at.campus.ads.utils.PageEnum;
+import javassist.NotFoundException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * A very simple class that shows how to load the driver, create a database,
@@ -16,30 +18,63 @@ public class Application {
 
     public static void main(String[] args) {
 
-        User user = new User("Omid", "Nazifi", "onazifi", "pass");
-        UserDao userDao = new UserDao();
-        Integer userId = userDao.save(user);
-        System.out.println("LOG [INFO] add new User" + user.toString());
+        initData();
+        Menu.showWelcomeMessage();
 
-        Optional<User> optionalUser = userDao.get(userId);
-        optionalUser.ifPresent(value -> System.out.println("LOG [INFO] get user by id" + value.toString()));
-
-        try {
-            Login login = new Login();
-        } catch (IOException e) {
-            e.printStackTrace();
+        PageEnum currentPage = PageEnum.START_PAGE;
+        boolean isRun = true;
+        while (isRun) {
+            try {
+                ActionEnum action = showMenuForPage(currentPage);
+                currentPage = doAction(action);
+            } catch (Exception e) {
+                // TODO wrong number
+                isRun = false;
+            }
         }
-
-        user.setUsername("NewUserName");
-        userDao.update(user);
-        System.out.println("LOG [INFO] update current user with new username" + user.getUsername());
-
-        List<User> users = userDao.getAll();
-        users.forEach(us -> System.out.println("LOG [INFO]" + us.toString()));
-
-        userDao.delete(user);
-        System.out.println("LOG [INFO] delete user from DB");
-
     }
 
+    private static void initData() {
+        User user = new User("Omid", "Nazifi", "onazifi", "pass");
+        UserDao userDao = new UserDao();
+        userDao.save(user);
+    }
+
+    public static ActionEnum showMenuForPage(PageEnum page) throws NotFoundException {
+        int actionIndex = -1;
+        switch (page) {
+            case START_PAGE:
+                actionIndex = Menu.showStartPageMenu();
+                break;
+            case HOME:
+                actionIndex = Menu.showHomeMenu();
+                break;
+        }
+        return ActionEnum.get(actionIndex);
+    }
+
+    public static PageEnum doAction(ActionEnum action) throws IOException {
+        switch (action) {
+            case EXIT:
+                System.exit(0);
+            case LOGIN:
+                Login login = new Login();
+                // TODO: login must return user object to keep as session
+                return PageEnum.HOME;
+            case REGISTER:
+                // TODO go to register
+                // return true or false
+                // if true then go to Login else go to Register
+                break;
+            case DELETE_ACCOUNT:
+                // TODO go to DELETE
+                // return true or false
+                // if true then go to Start_Page else ...
+                break;
+            case CHANGE_PASSWORD:
+                // TODO Change Password
+                break;
+        }
+        return PageEnum.START_PAGE;
+    }
 }

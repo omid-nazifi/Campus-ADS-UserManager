@@ -1,0 +1,18 @@
+package at.campus.ads.utils;
+
+import java.util.Scanner;
+
+public class ConsoleUtils {
+
+    public static String readLineFromConsole(String entry) {
+        Scanner input = new Scanner(System.in);
+        System.out.print(entry);
+        return input.nextLine();
+    }
+
+    public static int readNumberFromConsole(String entry) {
+        Scanner input = new Scanner(System.in);
+        System.out.print(entry);
+        return input.nextInt();
+    }
+}
