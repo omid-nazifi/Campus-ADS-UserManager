@@ -2,6 +2,7 @@ package at.campus.ads;
 
 import at.campus.ads.domain.User;
 import at.campus.ads.logik.Login;
+import at.campus.ads.logik.Register;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ActionEnum;
 import at.campus.ads.utils.Menu;
@@ -40,7 +41,7 @@ public class Application {
         userDao.save(user);
     }
 
-    public static ActionEnum showMenuForPage(PageEnum page) throws NotFoundException {
+    private static ActionEnum showMenuForPage(PageEnum page) throws NotFoundException {
         int actionIndex = -1;
         switch (page) {
             case START_PAGE:
@@ -53,7 +54,7 @@ public class Application {
         return ActionEnum.get(actionIndex);
     }
 
-    public static PageEnum doAction(ActionEnum action) throws IOException {
+    private static PageEnum doAction(ActionEnum action) throws IOException {
         switch (action) {
             case EXIT:
                 System.exit(0);
@@ -62,10 +63,12 @@ public class Application {
                 // TODO: login must return user object to keep as session
                 return PageEnum.HOME;
             case REGISTER:
-                // TODO go to register
-                // return true or false
-                // if true then go to Login else go to Register
-                break;
+                Register register = new Register();
+                boolean registerResult = register.doRegister();
+                if(registerResult) {
+                    return doAction(ActionEnum.LOGIN);
+                }
+                return PageEnum.START_PAGE;
             case DELETE_ACCOUNT:
                 // TODO go to DELETE
                 // return true or false

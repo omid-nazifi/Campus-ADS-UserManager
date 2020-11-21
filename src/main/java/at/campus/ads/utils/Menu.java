@@ -13,7 +13,11 @@ public class Menu {
 
     public static int showHomeMenu() {
         System.out.println("Liebe Kundin / Lieber Kunde, Sie sind in Ihr Profil.");
-        return ConsoleUtils.readNumberFromConsole("\t3. Passwort ändern \n\t4. Konto löschen \n\t5. Ausloggen");
+        return ConsoleUtils.readNumberFromConsole("\t3. Passwort ändern \n\t4. Konto löschen \n\t5. Ausloggen \n");
+    }
+
+    public static int showRegisterMenu() {
+        return ConsoleUtils.readNumberFromConsole("\t0. Abbrechen \n\t1. Nochmals versuchen \n");
     }
 
 }
