@@ -3,6 +3,7 @@ package at.campus.ads.logik;
 import at.campus.ads.domain.User;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ConsoleUtils;
+import at.campus.ads.utils.PasswordUtils;
 
 public class UserService {
 
@@ -19,5 +20,22 @@ public class UserService {
             return true;
         }
         return false;
+    }
+    
+    public static void changePassword(User user) {    	
+    	String newPassword = ConsoleUtils.readLineFromConsole("Bitte geben Sie das neue Kennwort: ");
+    	String confirmedPassword = ConsoleUtils.readLineFromConsole("Bitte bestätigen Sie das neue Kennwort: ");
+    	
+    	if (newPassword.equals(confirmedPassword)) {
+        	user.setPassword(PasswordUtils.generateSecurePassword(newPassword));
+        	UserDao userDao = new UserDao();
+        	userDao.update(user);
+        	System.out.println("Das Kennwort wurde erfolgreich geändert");
+    	}
+    	else {
+    		System.out.println("Kennwörter nicht gleich ausgeben");
+    	}
+    	
+
     }
 }
