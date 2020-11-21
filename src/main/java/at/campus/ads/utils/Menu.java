@@ -7,9 +7,7 @@ import at.campus.ads.logik.UserService;
 import at.campus.ads.persistence.UserDao;
 import javassist.NotFoundException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Menu {
 
@@ -31,7 +29,7 @@ public class Menu {
     public static PageEnum doAction(ActionEnum action) throws IOException {
         if (session != null && !session.isSessionActive()) {
             showInactiveSessionMessage();
-            session.deleteUser();
+            session.deleteUserFromSession();
             return PageEnum.START_PAGE;
         }
         switch (action) {
@@ -46,13 +44,13 @@ public class Menu {
             case REGISTER:
                 Register register = new Register();
                 boolean registerResult = register.doRegister();
-                if(registerResult) {
+                if (registerResult) {
                     return doAction(ActionEnum.LOGIN);
                 }
                 return PageEnum.START_PAGE;
             case DELETE_ACCOUNT:
-                if( UserService.deleteUser(session.getUser())) {
-                    session.deleteUser();
+                if (UserService.deleteUser(session.getUser())) {
+                    session.deleteUserFromSession();
                     return PageEnum.START_PAGE;
                 } else {
                     session.updateSessionExpireTime();
@@ -63,7 +61,7 @@ public class Menu {
                 // TODO Change Password
                 break;
             case LOGOUT:
-                session.deleteUser();
+                session.deleteUserFromSession();
         }
         return PageEnum.START_PAGE;
     }

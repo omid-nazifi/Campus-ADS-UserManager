@@ -4,26 +4,23 @@ import at.campus.ads.domain.User;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.Menu;
+import at.campus.ads.utils.PasswordUtils;
 
 public class Register {
-    private String firstname;
-    private String lastname;
-    private String username;
-    private String password;
 
     public boolean doRegister() {
-        this.username = ConsoleUtils.readLineFromConsole("Benutzername:");
+        String username = ConsoleUtils.readLineFromConsole("Benutzername:");
 
         if(!isUsernameExistingInDatabase(username)) {
-            this.firstname = ConsoleUtils.readLineFromConsole("Vorname:");
-            this.lastname = ConsoleUtils.readLineFromConsole("Nachname:");
-            this.password = ConsoleUtils.readLineFromConsole("Passwort:");
+            String firstname = ConsoleUtils.readLineFromConsole("Vorname:");
+            String lastname = ConsoleUtils.readLineFromConsole("Nachname:");
+            String password = ConsoleUtils.readLineFromConsole("Passwort:");
 
             User user = new User();
             user.setFirstName(firstname);
             user.setLastName(lastname);
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(PasswordUtils.generateSecurePassword(password));
 
             UserDao userDao = new UserDao();
             userDao.save(user);

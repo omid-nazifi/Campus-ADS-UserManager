@@ -2,6 +2,8 @@ package at.campus.ads.logik;
 
 import at.campus.ads.domain.User;
 import at.campus.ads.persistence.UserDao;
+import at.campus.ads.utils.PasswordUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +18,7 @@ public class Login {
     private boolean loggedIn = false;
 
     public Login() throws IOException {
-        while(loggedIn==false && anmeldeVersuche<MaxErlaubteAnmeldeVersuche) {
+        while (loggedIn == false && anmeldeVersuche < MaxErlaubteAnmeldeVersuche) {
             this.username = readLineFromConsole("Benutzername:");
             this.password = readLineFromConsole("Passwort:");
             System.out.println("LOG [INFO] " + login());
@@ -25,27 +27,23 @@ public class Login {
     }
 
     private String login() {
-        String meldung="";
+        String meldung = "";
         UserDao userDao = new UserDao();
         List<User> users = userDao.findAll();
 
-        for (User user : users)
-        {
-            if(user.getUsername().equals(this.username) && user.getPassword().equals(this.password))
-            {
-                meldung = "Login erfolgreich! Herzlich willkommen "+this.username;
+        for (User user : users) {
+
+            if (user.getUsername().equals(this.username) && PasswordUtils.verifyUserPassword(this.password, user.getPassword())) {
+                meldung = "Login erfolgreich! Herzlich willkommen " + this.username;
                 loggedIn = true;
-            }
-            else
-            {
+            } else {
                 meldung = "username oder password nicht korrekt";
             }
         }
         return meldung;
     }
 
-    private String readLineFromConsole(String beschreibungFuerConsole) throws IOException
-    {
+    private String readLineFromConsole(String beschreibungFuerConsole) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print(beschreibungFuerConsole);
         return br.readLine();

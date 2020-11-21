@@ -20,7 +20,7 @@ public class Session {
         return user;
     }
 
-    public void deleteUser() {
+    public void deleteUserFromSession() {
         user = null;
     }
 

@@ -5,6 +5,7 @@ import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ActionEnum;
 import at.campus.ads.utils.Menu;
 import at.campus.ads.utils.PageEnum;
+import at.campus.ads.utils.PasswordUtils;
 import javassist.NotFoundException;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class Application {
     }
 
     private static void initData() {
-        User user = new User("Omid", "Nazifi", "onazifi", "pass");
+        User user = new User("Omid", "Nazifi", "onazifi", PasswordUtils.generateSecurePassword("pass"));
         UserDao userDao = new UserDao();
         userDao.save(user);
     }
