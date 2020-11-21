@@ -83,13 +83,6 @@ public class Menu {
         return ConsoleUtils.readNumberFromConsole("\t0. Abbrechen \n\t1. Nochmals versuchen \n");
     }
 
-    public static boolean confirmUserInput(String text) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println(text + " ( y / other key )");
-        String userInputConfirmation = reader.readLine();
-        return userInputConfirmation.equals("y");
-    }
-
     private static int showStartPageMenu() {
         System.out.println("Bitte loggen ein, Wenn Sie einen Konto haben, sonst legen neuen Konto an:");
         return ConsoleUtils.readNumberFromConsole("\t1. Einloggen \n\t2. Registrierung \n\t0.Ausgang \n");

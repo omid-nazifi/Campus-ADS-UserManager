@@ -15,4 +15,9 @@ public class ConsoleUtils {
         System.out.print(entry);
         return input.nextInt();
     }
+
+    public static boolean confirmUserInput(String text) {
+        String input = ConsoleUtils.readLineFromConsole(text + " ( y / other key )");
+        return input.equals("y");
+    }
 }
