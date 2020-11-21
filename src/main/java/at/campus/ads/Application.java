@@ -1,8 +1,10 @@
 package at.campus.ads;
 
 import at.campus.ads.domain.User;
+import at.campus.ads.logik.Login;
 import at.campus.ads.persistence.UserDao;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,12 @@ public class Application {
 
         Optional<User> optionalUser = userDao.get(userId);
         optionalUser.ifPresent(value -> System.out.println("LOG [INFO] get user by id" + value.toString()));
+
+        try {
+            Login login = new Login();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         user.setUsername("NewUserName");
         userDao.update(user);
