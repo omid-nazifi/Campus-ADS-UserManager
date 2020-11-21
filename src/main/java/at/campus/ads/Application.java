@@ -8,6 +8,7 @@ import at.campus.ads.utils.PageEnum;
 import javassist.NotFoundException;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 
 /**
  * A very simple class that shows how to load the driver, create a database,
@@ -26,10 +27,8 @@ public class Application {
             try {
                 ActionEnum action = Menu.showMenuForPage(currentPage);
                 currentPage = Menu.doAction(action);
-            } catch (NotFoundException e) {
-                // TODO wrong number
+            } catch (NotFoundException | InputMismatchException e) {
                 Menu.showWrongMessage();
-                isRun = false;
             } catch (IOException e) {
                 e.printStackTrace();
                 isRun = false;
