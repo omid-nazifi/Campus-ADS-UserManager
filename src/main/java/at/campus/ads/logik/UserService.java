@@ -13,7 +13,7 @@ public class UserService {
         if (inputConfirmed) {
             UserDao userDao = new UserDao();
 
-            System.out.println("");
+            System.out.println();
             userDao.delete(user);
             System.out.println("Der aktuelle User wurde gel√∂scht. Aktuelle User in DB: " + userDao.findAll().size());
 
@@ -24,16 +24,16 @@ public class UserService {
     
     public static void changePassword(User user) {    	
     	String newPassword = ConsoleUtils.readLineFromConsole("Bitte geben Sie das neue Kennwort: ");
-    	String confirmedPassword = ConsoleUtils.readLineFromConsole("Bitte best‰tigen Sie das neue Kennwort: ");
+    	String confirmedPassword = ConsoleUtils.readLineFromConsole("Bitte best√§tigen Sie das neue Kennwort: ");
     	
     	if (newPassword.equals(confirmedPassword)) {
         	user.setPassword(PasswordUtils.generateSecurePassword(newPassword));
         	UserDao userDao = new UserDao();
         	userDao.update(user);
-        	System.out.println("Das Kennwort wurde erfolgreich ge‰ndert");
+        	System.out.println("Das Kennwort wurde erfolgreich ge√§ndert");
     	}
     	else {
-    		System.out.println("Kennwˆrter nicht gleich ausgeben");
+    		System.out.println("Kennw√∂rter nicht gleich ausgeben");
     	}
     	
 
