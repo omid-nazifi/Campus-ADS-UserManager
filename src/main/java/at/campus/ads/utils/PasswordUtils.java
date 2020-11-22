@@ -31,26 +31,20 @@ public class PasswordUtils {
         return new String(returnValue);
     }
 
-    public static String generateSecurePassword(String password) {
+    public static String generateSecurePassword(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] securePassword = hash(password.toCharArray(), SALT.getBytes());
         return Base64.getEncoder().encodeToString(securePassword);
     }
 
-    public static boolean verifyUserPassword(String providedPassword, String securedPassword) {
+    public static boolean verifyUserPassword(String providedPassword, String securedPassword) throws InvalidKeySpecException, NoSuchAlgorithmException {
         String newSecurePassword = generateSecurePassword(providedPassword);
         return newSecurePassword.equalsIgnoreCase(securedPassword);
     }
 
-    private static byte[] hash(char[] password, byte[] salt) {
+    private static byte[] hash(char[] password, byte[] salt) throws InvalidKeySpecException, NoSuchAlgorithmException {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
-        try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            return skf.generateSecret(spec).getEncoded();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
-        } finally {
-            spec.clearPassword();
-        }
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        return skf.generateSecret(spec).getEncoded();
     }
 }

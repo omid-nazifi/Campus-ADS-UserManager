@@ -5,6 +5,9 @@ import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.PasswordUtils;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 public class UserService {
 
     public static boolean deleteUser(User user) {
@@ -22,7 +25,7 @@ public class UserService {
         return false;
     }
 
-    public static void changePassword(User user) {
+    public static void changePassword(User user) throws InvalidKeySpecException, NoSuchAlgorithmException {
         String newPassword = ConsoleUtils.readLineFromConsole("Bitte geben Sie das neue Kennwort: ");
         String confirmedPassword = ConsoleUtils.readLineFromConsole("Bitte bestätigen Sie das neue Kennwort: ");
 

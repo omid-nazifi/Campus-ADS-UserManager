@@ -5,9 +5,12 @@ import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.PasswordUtils;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 public class Register {
 
-    public boolean doRegister() {
+    public boolean doRegister() throws InvalidKeySpecException, NoSuchAlgorithmException {
         String username = ConsoleUtils.readLineFromConsole("Benutzername:");
 
         if (!isUsernameExistingInDatabase(username)) {

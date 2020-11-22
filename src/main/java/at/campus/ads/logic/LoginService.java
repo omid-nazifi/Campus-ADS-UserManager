@@ -5,12 +5,14 @@ import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.PasswordUtils;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
 public class LoginService {
     private static final int MAX_ALLOWED_LOGIN_ATTEMPTS = 3;
 
-    public static User login() {
+    public static User login() throws InvalidKeySpecException, NoSuchAlgorithmException {
         int loginAttempts = 0;
         boolean loggedIn = false;
         String username;
@@ -27,7 +29,7 @@ public class LoginService {
         return user;
     }
 
-    private static User checkCredentials(String username, String password) {
+    private static User checkCredentials(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
         UserDao userDao = new UserDao();
         Optional<User> userOptional = userDao.findByUsername(username);
 

@@ -6,7 +6,8 @@ import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.PageEnum;
 import javassist.NotFoundException;
 
-import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 public class Menu {
 
@@ -25,7 +26,7 @@ public class Menu {
         return ActionEnum.get(actionIndex);
     }
 
-    public static PageEnum doAction(ActionEnum action) throws IOException {
+    public static PageEnum doAction(ActionEnum action) throws InvalidKeySpecException, NoSuchAlgorithmException {
         if (session != null && !session.isSessionActive()) {
             showInactiveSessionMessage();
             session.deleteUserFromSession();

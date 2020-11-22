@@ -1,14 +1,16 @@
 package at.campus.ads;
 
 import at.campus.ads.domain.User;
+import at.campus.ads.logic.Menu;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ActionEnum;
-import at.campus.ads.logic.Menu;
 import at.campus.ads.utils.PageEnum;
 import at.campus.ads.utils.PasswordUtils;
 import javassist.NotFoundException;
+import org.apache.log4j.Logger;
 
-import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.InputMismatchException;
 
 /**
@@ -16,6 +18,8 @@ import java.util.InputMismatchException;
  * create a table, and insert some data.
  */
 public class Application {
+
+    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
 
     public static void main(String[] args) {
 
@@ -30,16 +34,26 @@ public class Application {
                 currentPage = Menu.doAction(action);
             } catch (NotFoundException | InputMismatchException e) {
                 Menu.showWrongMessage();
-            } catch (IOException e) {
-                e.printStackTrace();
+                logError(e);
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
                 isRun = false;
+                logError(e);
             }
         }
     }
 
     private static void initData() {
-        User user = new User("Omid", "Nazifi", "onazifi", PasswordUtils.generateSecurePassword("pass"));
+        User user = null;
+        try {
+            user = new User("Omid", "Nazifi", "onazifi", PasswordUtils.generateSecurePassword("pass"));
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            logError(e);
+        }
         UserDao userDao = new UserDao();
         userDao.save(user);
+    }
+
+    private static void logError(Exception e) {
+        LOGGER.error(e.getMessage());
     }
 }
