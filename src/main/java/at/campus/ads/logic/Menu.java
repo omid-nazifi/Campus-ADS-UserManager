@@ -8,6 +8,7 @@ import javassist.NotFoundException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Optional;
 
 public class Menu {
 
@@ -36,9 +37,9 @@ public class Menu {
             case EXIT:
                 System.exit(0);
             case LOGIN:
-                User user = LoginService.login();
-                if (user != null) {
-                    session = new Session(user);
+                Optional<User> loggedInUser = LoginService.login();
+                if (loggedInUser.isPresent()) {
+                    session = new Session(loggedInUser.get());
                     return PageEnum.HOME;
                 }
                 return PageEnum.START_PAGE;

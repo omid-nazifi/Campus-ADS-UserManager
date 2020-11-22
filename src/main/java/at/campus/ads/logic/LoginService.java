@@ -12,24 +12,24 @@ import java.util.Optional;
 public class LoginService {
     private static final int MAX_ALLOWED_LOGIN_ATTEMPTS = 3;
 
-    public static User login() throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static Optional<User> login() throws InvalidKeySpecException, NoSuchAlgorithmException {
         int loginAttempts = 0;
         boolean loggedIn = false;
         String username;
         String password;
-        User user = null;
+        Optional<User> userOptional = Optional.empty();
 
         while (!loggedIn && loginAttempts < MAX_ALLOWED_LOGIN_ATTEMPTS) {
             username = ConsoleUtils.readLineFromConsole("Benutzername:");
             password = ConsoleUtils.readLineFromConsole("Passwort:");
-            user = checkCredentials(username, password);
-            if (user != null) loggedIn = true;
+            userOptional = checkCredentials(username, password);
+            if (userOptional.isPresent()) loggedIn = true;
             loginAttempts++;
         }
-        return user;
+        return userOptional;
     }
 
-    private static User checkCredentials(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    private static Optional<User> checkCredentials(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
         UserDao userDao = new UserDao();
         Optional<User> userOptional = userDao.findByUsername(username);
 
@@ -37,11 +37,11 @@ public class LoginService {
             User user = userOptional.get();
             if (PasswordUtils.verifyUserPassword(password, user.getPassword())) {
                 System.out.println("Login erfolgreich! Herzlich willkommen " + username);
-                return user;
+                return userOptional;
             }
         }
         System.out.println("Username oder Password nicht korrekt");
-        return null;
+        return Optional.empty();
     }
 
 }

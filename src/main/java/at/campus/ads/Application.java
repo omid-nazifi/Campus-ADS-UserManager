@@ -43,14 +43,14 @@ public class Application {
     }
 
     private static void initData() {
-        User user = null;
+        User user;
         try {
             user = new User("Omid", "Nazifi", "onazifi", PasswordUtils.generateSecurePassword("pass"));
+            UserDao userDao = new UserDao();
+            userDao.save(user);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             logError(e);
         }
-        UserDao userDao = new UserDao();
-        userDao.save(user);
     }
 
     private static void logError(Exception e) {
