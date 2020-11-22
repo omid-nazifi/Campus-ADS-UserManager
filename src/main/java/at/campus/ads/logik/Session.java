@@ -1,4 +1,4 @@
-package at.campus.ads.utils;
+package at.campus.ads.logik;
 
 import at.campus.ads.domain.User;
 

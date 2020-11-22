@@ -3,7 +3,6 @@ package at.campus.ads.logik;
 import at.campus.ads.domain.User;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ConsoleUtils;
-import at.campus.ads.utils.Menu;
 import at.campus.ads.utils.PasswordUtils;
 
 public class Register {
@@ -24,6 +23,7 @@ public class Register {
 
             UserDao userDao = new UserDao();
             userDao.save(user);
+            System.out.println("Herzlichen Glückwunsch, Ihre Registrierung war erfolgreich.");
             return true;
         }
 

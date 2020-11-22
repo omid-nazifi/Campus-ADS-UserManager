@@ -15,7 +15,7 @@ public class UserService {
 
             System.out.println();
             userDao.delete(user);
-            System.out.println("Der aktuelle User wurde gelöscht. Aktuelle User in DB: " + userDao.findAll().size());
+            System.out.println("Der aktuelle User wurde gelöscht. Sie können nicht mehr mit dem Benutzer \"" + user.getUsername() + "\" einloggen.");
 
             return true;
         }

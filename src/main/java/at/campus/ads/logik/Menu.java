@@ -1,9 +1,9 @@
-package at.campus.ads.utils;
+package at.campus.ads.logik;
 
 import at.campus.ads.domain.User;
-import at.campus.ads.logik.LoginService;
-import at.campus.ads.logik.Register;
-import at.campus.ads.logik.UserService;
+import at.campus.ads.utils.ActionEnum;
+import at.campus.ads.utils.ConsoleUtils;
+import at.campus.ads.utils.PageEnum;
 import javassist.NotFoundException;
 
 import java.io.IOException;
@@ -87,7 +87,7 @@ public class Menu {
     }
 
     private static int showHomeMenu() {
-        System.out.println("Liebe Kundin / Lieber Kunde, Sie sind in Ihr Profil.");
+        System.out.println("Liebe Benutzerin / Lieber Benutzer, Sie sind momentan in Ihr Profil.");
         return ConsoleUtils.readNumberFromConsole("\t3. Passwort ändern \n\t4. Konto löschen \n\t5. Ausloggen \n");
     }
 

@@ -1,6 +1,6 @@
 package at.campus.ads.persistence;
 
-import at.campus.ads.HibernateUtil;
+import at.campus.ads.utils.HibernateUtil;
 import at.campus.ads.domain.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -22,7 +22,7 @@ public class UserDao implements Dao<User> {
             factory = HibernateUtil.getSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
+            throw new ExceptionInInitializerError("Failed to create sessionFactory object.");
         }
     }
 
@@ -53,7 +53,7 @@ public class UserDao implements Dao<User> {
         User selectedUser = null;
         HibernateUtil.getSessionFactory();
         try (Session session = factory.openSession()) {
-            Query query = session.createQuery("FROM User where username = :username");
+            Query query = session.createQuery("FROM User WHERE username = :username");
             query.setParameter("username", username);
             selectedUser = (User) query.getSingleResult();
         } catch (HibernateException e) {

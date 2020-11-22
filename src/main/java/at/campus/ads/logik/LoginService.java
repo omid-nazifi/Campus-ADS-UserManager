@@ -2,44 +2,38 @@ package at.campus.ads.logik;
 
 import at.campus.ads.domain.User;
 import at.campus.ads.persistence.UserDao;
+import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.PasswordUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
+import java.util.Optional;
 
 public class LoginService {
+    private static final int MAX_ALLOWED_LOGIN_ATTEMPTS = 3;
 
-    public LoginService() {
-
-    }
-
-    public static User login() throws IOException {
-        int MaxErlaubteAnmeldeVersuche = 3;
-        int anmeldeVersuche = 0;
+    public static User login() {
+        int loginAttempts = 0;
         boolean loggedIn = false;
         String username;
         String password;
         User user = null;
 
-
-        while (!loggedIn && anmeldeVersuche < MaxErlaubteAnmeldeVersuche) {
-            username = readLineFromConsole("Benutzername:");
-            password = readLineFromConsole("Passwort:");
+        while (!loggedIn && loginAttempts < MAX_ALLOWED_LOGIN_ATTEMPTS) {
+            username = ConsoleUtils.readLineFromConsole("Benutzername:");
+            password = ConsoleUtils.readLineFromConsole("Passwort:");
             user = checkCredentials(username, password);
             if (user != null) loggedIn = true;
-            anmeldeVersuche++;
+            loginAttempts++;
         }
         return user;
     }
 
     private static User checkCredentials(String username, String password) {
         UserDao userDao = new UserDao();
-        List<User> users = userDao.findAll();
+        Optional<User> userOptional = userDao.findByUsername(username);
 
-        for (User user : users) {
-            if (user.getUsername().equals(username) && PasswordUtils.verifyUserPassword(password, user.getPassword())) {
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (PasswordUtils.verifyUserPassword(password, user.getPassword())) {
                 System.out.println("Login erfolgreich! Herzlich willkommen " + username);
                 return user;
             }
@@ -47,13 +41,5 @@ public class LoginService {
         System.out.println("Username oder Password nicht korrekt");
         return null;
     }
-
-    // TODO use ConsoleUtils instead to be consistent
-    private static String readLineFromConsole(String beschreibungFuerConsole) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print(beschreibungFuerConsole);
-        return br.readLine();
-    }
-
 
 }
