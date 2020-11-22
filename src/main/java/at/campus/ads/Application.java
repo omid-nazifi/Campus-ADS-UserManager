@@ -3,7 +3,7 @@ package at.campus.ads;
 import at.campus.ads.domain.User;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ActionEnum;
-import at.campus.ads.logik.Menu;
+import at.campus.ads.logic.Menu;
 import at.campus.ads.utils.PageEnum;
 import at.campus.ads.utils.PasswordUtils;
 import javassist.NotFoundException;

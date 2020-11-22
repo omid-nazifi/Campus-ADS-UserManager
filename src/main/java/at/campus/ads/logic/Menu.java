@@ -1,4 +1,4 @@
-package at.campus.ads.logik;
+package at.campus.ads.logic;
 
 import at.campus.ads.domain.User;
 import at.campus.ads.utils.ActionEnum;
