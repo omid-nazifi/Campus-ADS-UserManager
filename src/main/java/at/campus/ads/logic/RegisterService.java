@@ -8,9 +8,9 @@ import at.campus.ads.utils.PasswordUtils;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-public class Register {
+public class RegisterService {
 
-    public boolean doRegister() throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static boolean register() throws InvalidKeySpecException, NoSuchAlgorithmException {
         String username = ConsoleUtils.readLineFromConsole("Benutzername:");
 
         if (!isUsernameExistingInDatabase(username)) {
@@ -33,13 +33,13 @@ public class Register {
         System.out.println("Username existiert bereits");
         int entryCode = Menu.showRegisterMenu();
         if (entryCode == 1) {
-            doRegister();
+            register();
         }
 
         return false;
     }
 
-    private boolean isUsernameExistingInDatabase(String username) {
+    private static boolean isUsernameExistingInDatabase(String username) {
         UserDao userDao = new UserDao();
         return userDao.existsUsername(username);
     }

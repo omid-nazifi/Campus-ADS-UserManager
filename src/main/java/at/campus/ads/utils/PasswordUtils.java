@@ -20,6 +20,7 @@ public class PasswordUtils {
     private static final String SALT = "EqdmPh53c9x33EygXpTpcoJvc4VXLK";
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
+    public static final String SECRET_KEY_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     public static String getSalt(int length) {
         StringBuilder returnValue = new StringBuilder(length);
@@ -42,9 +43,9 @@ public class PasswordUtils {
     }
 
     private static byte[] hash(char[] password, byte[] salt) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
+        PBEKeySpec keySpec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        return skf.generateSecret(spec).getEncoded();
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(SECRET_KEY_ALGORITHM);
+        return secretKeyFactory.generateSecret(keySpec).getEncoded();
     }
 }

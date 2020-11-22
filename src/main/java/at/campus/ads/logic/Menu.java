@@ -44,8 +44,7 @@ public class Menu {
                 }
                 return PageEnum.START_PAGE;
             case REGISTER:
-                Register register = new Register();
-                boolean registerResult = register.doRegister();
+                boolean registerResult = RegisterService.register();
                 if (registerResult) {
                     return doAction(ActionEnum.LOGIN);
                 }
