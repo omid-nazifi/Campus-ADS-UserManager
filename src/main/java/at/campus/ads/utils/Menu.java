@@ -40,7 +40,7 @@ public class Menu {
                     session = new Session(user);
                     return PageEnum.HOME;
                 }
-               return PageEnum.START_PAGE;
+                return PageEnum.START_PAGE;
             case REGISTER:
                 Register register = new Register();
                 boolean registerResult = register.doRegister();

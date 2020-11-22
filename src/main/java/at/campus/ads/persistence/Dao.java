@@ -1,7 +1,5 @@
 package at.campus.ads.persistence;
 
-import at.campus.ads.domain.User;
-
 import java.util.List;
 import java.util.Optional;
 

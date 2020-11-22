@@ -2,7 +2,10 @@ package at.campus.ads.persistence;
 
 import at.campus.ads.HibernateUtil;
 import at.campus.ads.domain.User;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
@@ -63,10 +66,7 @@ public class UserDao implements Dao<User> {
 
     public boolean existsUsername(String username) {
         Optional<User> user = findByUsername(username);
-        if(user.isPresent()) {
-            return true;
-        }
-        return false;
+        return user.isPresent();
     }
 
     @Override

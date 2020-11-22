@@ -7,15 +7,15 @@ import at.campus.ads.utils.PasswordUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.util.List;
 
 public class LoginService {
 
-    public LoginService()  {
+    public LoginService() {
 
     }
-    public static User login() throws IOException{
+
+    public static User login() throws IOException {
         int MaxErlaubteAnmeldeVersuche = 3;
         int anmeldeVersuche = 0;
         boolean loggedIn = false;

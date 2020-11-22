@@ -11,7 +11,7 @@ public class Register {
     public boolean doRegister() {
         String username = ConsoleUtils.readLineFromConsole("Benutzername:");
 
-        if(!isUsernameExistingInDatabase(username)) {
+        if (!isUsernameExistingInDatabase(username)) {
             String firstname = ConsoleUtils.readLineFromConsole("Vorname:");
             String lastname = ConsoleUtils.readLineFromConsole("Nachname:");
             String password = ConsoleUtils.readLineFromConsole("Passwort:");
@@ -27,9 +27,9 @@ public class Register {
             return true;
         }
 
-        System.out.println("„Username existiert bereits");
+        System.out.println("Username existiert bereits");
         int entryCode = Menu.showRegisterMenu();
-        if(entryCode == 1) {
+        if (entryCode == 1) {
             doRegister();
         }
 
