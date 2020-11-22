@@ -1,10 +1,9 @@
 package at.campus.ads.utils;
 
 import at.campus.ads.domain.User;
-import at.campus.ads.logik.Login;
+import at.campus.ads.logik.LoginService;
 import at.campus.ads.logik.Register;
 import at.campus.ads.logik.UserService;
-import at.campus.ads.persistence.UserDao;
 import javassist.NotFoundException;
 
 import java.io.IOException;
@@ -36,11 +35,12 @@ public class Menu {
             case EXIT:
                 System.exit(0);
             case LOGIN:
-                Login login = new Login();
-                // TODO: login must return user object to keep as session
-                User user = new UserDao().findByUsername("onazifi").get(); // this is temporary
-                session = new Session(user);
-                return PageEnum.HOME;
+                User user = LoginService.login();
+                if (user != null) {
+                    session = new Session(user);
+                    return PageEnum.HOME;
+                }
+               return PageEnum.START_PAGE;
             case REGISTER:
                 Register register = new Register();
                 boolean registerResult = register.doRegister();
