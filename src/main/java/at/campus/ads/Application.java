@@ -7,12 +7,12 @@ import at.campus.ads.utils.ActionEnum;
 import at.campus.ads.utils.PageEnum;
 import at.campus.ads.utils.PasswordUtils;
 import javassist.NotFoundException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.InputMismatchException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A very simple class that shows how to load the driver, create a database,
@@ -20,7 +20,8 @@ import java.util.InputMismatchException;
  */
 public class Application {
 
-    private static final Logger LOGGER = LogManager.getLogger(Application.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(Application.class.getName());
+
 
     public static void main(String[] args) {
 
@@ -55,6 +56,6 @@ public class Application {
     }
 
     private static void logError(Exception e) {
-        LOGGER.error(e.getMessage());
+        LOGGER.log(Level.SEVERE, e.getMessage());
     }
 }
