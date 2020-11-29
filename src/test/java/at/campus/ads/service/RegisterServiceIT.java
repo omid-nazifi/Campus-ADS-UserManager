@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegisterServiceTest {
+public class RegisterServiceIT {
 
     private static final String USERNAME = "user";
     private static final String FIRST_NAME = "test";
