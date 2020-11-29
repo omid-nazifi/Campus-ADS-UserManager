@@ -1,12 +1,12 @@
 package at.campus.ads.service;
 
-import at.campus.ads.common.utils.PasswordUtils;
 import at.campus.ads.persistence.domain.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginServiceIT {
 
