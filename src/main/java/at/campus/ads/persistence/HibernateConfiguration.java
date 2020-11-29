@@ -1,6 +1,6 @@
-package at.campus.ads.utils;
+package at.campus.ads.persistence;
 
-import at.campus.ads.domain.User;
+import at.campus.ads.persistence.domain.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -9,7 +9,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.util.Properties;
 
-public class HibernateUtil {
+public class HibernateConfiguration {
     private static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
