@@ -1,4 +1,4 @@
-package at.campus.ads.persistence;
+package at.campus.ads.persistence.dao;
 
 import java.util.List;
 import java.util.Optional;

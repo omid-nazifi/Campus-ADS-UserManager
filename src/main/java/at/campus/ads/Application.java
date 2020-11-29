@@ -1,12 +1,12 @@
 package at.campus.ads;
 
-import at.campus.ads.domain.User;
-import at.campus.ads.logger.FileLogger;
-import at.campus.ads.logic.Menu;
-import at.campus.ads.persistence.UserDao;
-import at.campus.ads.utils.ActionEnum;
-import at.campus.ads.utils.PageEnum;
-import at.campus.ads.utils.PasswordUtils;
+import at.campus.ads.common.logger.FileLogger;
+import at.campus.ads.common.utils.PasswordUtils;
+import at.campus.ads.persistence.dao.UserDao;
+import at.campus.ads.persistence.domain.User;
+import at.campus.ads.view.ActionEnum;
+import at.campus.ads.view.Menu;
+import at.campus.ads.view.PageEnum;
 import javassist.NotFoundException;
 
 import java.util.InputMismatchException;
@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 public class Application {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
 
     public static void main(String[] args) {
         initApp();
@@ -63,7 +62,7 @@ public class Application {
 
     private static void logError(Exception e) {
         String message = e.getMessage();
-        if(message != null) {
+        if (message != null) {
             LOGGER.log(Level.SEVERE, message, e);
         } else {
             LOGGER.log(Level.SEVERE, e.toString(), e);

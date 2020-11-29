@@ -1,7 +1,7 @@
-package at.campus.ads.persistence;
+package at.campus.ads.persistence.dao;
 
-import at.campus.ads.utils.HibernateUtil;
-import at.campus.ads.domain.User;
+import at.campus.ads.persistence.HibernateConfiguration;
+import at.campus.ads.persistence.domain.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +19,7 @@ public class UserDao implements Dao<User> {
 
     public UserDao() {
         try {
-            factory = HibernateUtil.getSessionFactory();
+            factory = HibernateConfiguration.getSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError("Failed to create sessionFactory object.");
@@ -29,7 +29,7 @@ public class UserDao implements Dao<User> {
     @Override
     public Optional<User> findById(int id) {
         User selectedUser = null;
-        HibernateUtil.getSessionFactory();
+        HibernateConfiguration.getSessionFactory();
         try (Session session = factory.openSession()) {
             selectedUser = session.get(User.class, id);
         } catch (HibernateException e) {
@@ -51,7 +51,7 @@ public class UserDao implements Dao<User> {
 
     public Optional<User> findByUsername(String username) {
         User selectedUser = null;
-        HibernateUtil.getSessionFactory();
+        HibernateConfiguration.getSessionFactory();
         try (Session session = factory.openSession()) {
             Query query = session.createQuery("FROM User WHERE username = :username");
             query.setParameter("username", username);

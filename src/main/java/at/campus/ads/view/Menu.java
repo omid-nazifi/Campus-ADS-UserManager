@@ -1,17 +1,19 @@
-package at.campus.ads.logic;
+package at.campus.ads.view;
 
-import at.campus.ads.domain.User;
-import at.campus.ads.exception.UserLoginException;
-import at.campus.ads.utils.ActionEnum;
-import at.campus.ads.utils.ConsoleUtils;
-import at.campus.ads.utils.PageEnum;
+import at.campus.ads.common.exception.UserLoginException;
+import at.campus.ads.common.utils.ConsoleUtils;
+import at.campus.ads.persistence.domain.User;
+import at.campus.ads.service.LoginService;
+import at.campus.ads.service.RegisterService;
+import at.campus.ads.service.SessionService;
+import at.campus.ads.service.UserService;
 import javassist.NotFoundException;
 
 import java.util.Optional;
 
 public class Menu {
 
-    private static Session session;
+    private static SessionService sessionService;
 
     public static ActionEnum showMenuForPage(PageEnum page) throws NotFoundException {
         int actionIndex = -1;
@@ -28,9 +30,12 @@ public class Menu {
     }
 
     public static PageEnum doAction(ActionEnum action) throws RuntimeException {
-        if (session != null && !session.isSessionActive()) {
+        LoginPage loginPage = new LoginPage(new LoginService());
+        RegisterPage registerPage = new RegisterPage(new RegisterService());
+        UserProfilePage userProfilePage = new UserProfilePage(new UserService());
+        if (sessionService != null && !sessionService.isSessionActive()) {
             showInactiveSessionMessage();
-            session.deleteUserFromSession();
+            sessionService.deleteUserFromSession();
             return PageEnum.START_PAGE;
         }
 
@@ -39,9 +44,9 @@ public class Menu {
                 System.exit(0);
             case LOGIN:
                 try {
-                    Optional<User> loggedInUser = LoginService.login();
+                    Optional<User> loggedInUser = loginPage.showLogin();
                     if (loggedInUser.isPresent()) {
-                        session = new Session(loggedInUser.get());
+                        sessionService = new SessionService(loggedInUser.get());
                         return PageEnum.HOME;
                     }
                 } catch (UserLoginException e) {
@@ -49,25 +54,25 @@ public class Menu {
                 }
                 return PageEnum.START_PAGE;
             case REGISTER:
-                boolean registerResult = RegisterService.register();
+                boolean registerResult = registerPage.doRegister();
                 if (registerResult) {
                     return doAction(ActionEnum.LOGIN);
                 }
                 return PageEnum.START_PAGE;
             case DELETE_ACCOUNT:
-                if (UserService.deleteUser(session.getUser())) {
-                    session.deleteUserFromSession();
+                if (userProfilePage.deleteUser(sessionService.getUser())) {
+                    sessionService.deleteUserFromSession();
                     return PageEnum.START_PAGE;
                 } else {
-                    session.updateSessionExpireTime();
+                    sessionService.updateSessionExpireTime();
                     return PageEnum.HOME;
                 }
             case CHANGE_PASSWORD:
-                session.updateSessionExpireTime();
-                UserService.changePassword(session.getUser());
+                sessionService.updateSessionExpireTime();
+                userProfilePage.changePassword(sessionService.getUser());
                 return PageEnum.HOME;
             case LOGOUT:
-                session.deleteUserFromSession();
+                sessionService.deleteUserFromSession();
         }
         return PageEnum.START_PAGE;
     }

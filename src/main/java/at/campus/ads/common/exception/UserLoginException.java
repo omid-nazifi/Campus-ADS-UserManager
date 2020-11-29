@@ -1,4 +1,4 @@
-package at.campus.ads.exception;
+package at.campus.ads.common.exception;
 
 public class UserLoginException extends Exception {
 
