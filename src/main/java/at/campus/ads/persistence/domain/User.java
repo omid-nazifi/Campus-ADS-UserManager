@@ -1,4 +1,4 @@
-package at.campus.ads.domain;
+package at.campus.ads.persistence.domain;
 
 import javax.persistence.*;
 

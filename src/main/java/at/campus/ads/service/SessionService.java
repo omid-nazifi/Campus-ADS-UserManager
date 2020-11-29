@@ -1,18 +1,18 @@
-package at.campus.ads.logic;
+package at.campus.ads.service;
 
-import at.campus.ads.domain.User;
+import at.campus.ads.persistence.domain.User;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Session {
+public class SessionService {
     private static final long MAX_SESSION_PERIOD_PER_SECOND = 60;
 
     private User user;
     private LocalDateTime lastActivityTime;
 
-    public Session(User user) {
-        if(user == null) {
+    public SessionService(User user) {
+        if (user == null) {
             throw new NullPointerException("null user object passed to the session!");
         }
 

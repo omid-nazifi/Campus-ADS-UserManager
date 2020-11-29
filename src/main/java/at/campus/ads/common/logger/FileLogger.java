@@ -1,4 +1,4 @@
-package at.campus.ads.logger;
+package at.campus.ads.common.logger;
 
 import java.io.IOException;
 import java.util.logging.*;

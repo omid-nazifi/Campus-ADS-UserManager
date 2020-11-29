@@ -1,4 +1,4 @@
-package at.campus.ads.utils;
+package at.campus.ads.view;
 
 import javassist.NotFoundException;
 
