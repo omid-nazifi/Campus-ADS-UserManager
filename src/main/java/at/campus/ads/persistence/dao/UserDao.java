@@ -108,7 +108,7 @@ public class UserDao implements Dao<User> {
             User selectedUser = session.get(User.class, user.getId());
             session.delete(selectedUser);
             transaction.commit();
-        } catch (HibernateException e) {
+        } catch (HibernateException | IllegalArgumentException e) {
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
