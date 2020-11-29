@@ -12,6 +12,10 @@ public class Session {
     private LocalDateTime lastActivityTime;
 
     public Session(User user) {
+        if(user == null) {
+            throw new NullPointerException("null user object passed to the session!");
+        }
+
         this.user = user;
         this.lastActivityTime = LocalDateTime.now();
     }

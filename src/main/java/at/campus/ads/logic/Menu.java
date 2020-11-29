@@ -1,13 +1,12 @@
 package at.campus.ads.logic;
 
 import at.campus.ads.domain.User;
+import at.campus.ads.exception.UserLoginException;
 import at.campus.ads.utils.ActionEnum;
 import at.campus.ads.utils.ConsoleUtils;
 import at.campus.ads.utils.PageEnum;
 import javassist.NotFoundException;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
 public class Menu {
@@ -24,23 +23,29 @@ public class Menu {
                 actionIndex = Menu.showHomeMenu();
                 break;
         }
+        //TODO validate action before return it
         return ActionEnum.get(actionIndex);
     }
 
-    public static PageEnum doAction(ActionEnum action) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static PageEnum doAction(ActionEnum action) throws RuntimeException {
         if (session != null && !session.isSessionActive()) {
             showInactiveSessionMessage();
             session.deleteUserFromSession();
             return PageEnum.START_PAGE;
         }
+
         switch (action) {
             case EXIT:
                 System.exit(0);
             case LOGIN:
-                Optional<User> loggedInUser = LoginService.login();
-                if (loggedInUser.isPresent()) {
-                    session = new Session(loggedInUser.get());
-                    return PageEnum.HOME;
+                try {
+                    Optional<User> loggedInUser = LoginService.login();
+                    if (loggedInUser.isPresent()) {
+                        session = new Session(loggedInUser.get());
+                        return PageEnum.HOME;
+                    }
+                } catch (UserLoginException e) {
+                    showTooManyFailedAttemptsMessage(e.getMessage());
                 }
                 return PageEnum.START_PAGE;
             case REGISTER:
@@ -67,15 +72,24 @@ public class Menu {
         return PageEnum.START_PAGE;
     }
 
-
     public static void showWelcomeMessage() {
         System.out.println();
         System.out.println("Herzlich willkommen.");
     }
 
-    public static void showWrongMessage() {
+    public static void showWrongInputMessage() {
         System.out.println();
         System.out.println("Ungültiger Eingabewert. Bitte versuchen Sie es nochmal:");
+    }
+
+    public static void showSystemErrorMessage() {
+        System.out.println();
+        System.out.println("Ein Serverfehler ist aufgetreten. Bitte kontaktieren Sie den Administrator!");
+    }
+
+    public static void showTooManyFailedAttemptsMessage(String message) {
+        System.out.println();
+        System.out.println(message);
     }
 
     public static int showRegisterMenu() {
@@ -84,7 +98,7 @@ public class Menu {
 
     private static int showStartPageMenu() {
         System.out.println("Bitte loggen ein, Wenn Sie einen Konto haben, sonst legen neuen Konto an:");
-        return ConsoleUtils.readNumberFromConsole("\t1. Einloggen \n\t2. Registrierung \n\t0.Ausgang \n");
+        return ConsoleUtils.readNumberFromConsole("\t1. Einloggen \n\t2. Registrierung \n\t0. Ausgang \n");
     }
 
     private static int showHomeMenu() {
