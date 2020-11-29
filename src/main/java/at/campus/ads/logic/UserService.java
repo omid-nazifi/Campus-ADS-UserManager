@@ -10,7 +10,10 @@ import java.security.spec.InvalidKeySpecException;
 
 public class UserService {
 
-    public static boolean deleteUser(User user) {
+    public static boolean deleteUser(User user) throws NullPointerException {
+        if(user == null)
+            throw new NullPointerException("null user object for the delete action!");
+
         boolean inputConfirmed = ConsoleUtils.confirmUserInput("Sind Sie sicher, dass sie den aktuell eingeloggten User löschen möchten?");
 
         if (inputConfirmed) {
@@ -25,12 +28,19 @@ public class UserService {
         return false;
     }
 
-    public static void changePassword(User user) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static void changePassword(User user) throws RuntimeException {
+        if(user == null)
+            throw new NullPointerException("null user object for the change password action!");
+
         String newPassword = ConsoleUtils.readLineFromConsole("Bitte geben Sie das neue Kennwort: ");
         String confirmedPassword = ConsoleUtils.readLineFromConsole("Bitte bestätigen Sie das neue Kennwort: ");
 
         if (newPassword.equals(confirmedPassword)) {
-            user.setPassword(PasswordUtils.generateSecurePassword(newPassword));
+            try {
+                user.setPassword(PasswordUtils.generateSecurePassword(newPassword));
+            } catch (Exception e) {
+                throw new RuntimeException("Eine Exception bei der Passwort-Änderung!", e);
+            }
             UserDao userDao = new UserDao();
             userDao.update(user);
             System.out.println("Das Kennwort wurde erfolgreich geändert");

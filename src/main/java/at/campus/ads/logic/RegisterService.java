@@ -10,7 +10,7 @@ import java.security.spec.InvalidKeySpecException;
 
 public class RegisterService {
 
-    public static boolean register() throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static boolean register() throws RuntimeException {
         String username = ConsoleUtils.readLineFromConsole("Benutzername:");
 
         if (!isUsernameExistingInDatabase(username)) {
@@ -22,7 +22,11 @@ public class RegisterService {
             user.setFirstName(firstname);
             user.setLastName(lastname);
             user.setUsername(username);
-            user.setPassword(PasswordUtils.generateSecurePassword(password));
+            try {
+                user.setPassword(PasswordUtils.generateSecurePassword(password));
+            } catch (Exception e) {
+                throw new RuntimeException("Eine Exception bei der Registrierung!", e);
+            }
 
             UserDao userDao = new UserDao();
             userDao.save(user);

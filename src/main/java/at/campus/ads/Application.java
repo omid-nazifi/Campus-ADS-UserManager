@@ -1,30 +1,25 @@
 package at.campus.ads;
 
 import at.campus.ads.domain.User;
+import at.campus.ads.logger.FileLogger;
 import at.campus.ads.logic.Menu;
 import at.campus.ads.persistence.UserDao;
 import at.campus.ads.utils.ActionEnum;
 import at.campus.ads.utils.PageEnum;
 import at.campus.ads.utils.PasswordUtils;
 import javassist.NotFoundException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.InputMismatchException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- * A very simple class that shows how to load the driver, create a database,
- * create a table, and insert some data.
- */
 public class Application {
 
-    private static final Logger LOGGER = LogManager.getLogger(Application.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 
     public static void main(String[] args) {
-
-        initData();
+        initApp();
         Menu.showWelcomeMessage();
 
         PageEnum currentPage = PageEnum.START_PAGE;
@@ -34,12 +29,24 @@ public class Application {
                 ActionEnum action = Menu.showMenuForPage(currentPage);
                 currentPage = Menu.doAction(action);
             } catch (NotFoundException | InputMismatchException e) {
-                Menu.showWrongMessage();
+                Menu.showWrongInputMessage();
                 logError(e);
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            } catch (RuntimeException e) {
                 isRun = false;
+                Menu.showSystemErrorMessage();
                 logError(e);
             }
+        }
+    }
+
+    private static void initApp() {
+        try {
+            FileLogger.setup();
+            initData();
+        } catch (Exception e) {
+            Menu.showSystemErrorMessage();
+            logError(e);
+            System.exit(0);
         }
     }
 
@@ -49,12 +56,17 @@ public class Application {
             user = new User("Omid", "Nazifi", "onazifi", PasswordUtils.generateSecurePassword("pass"));
             UserDao userDao = new UserDao();
             userDao.save(user);
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             logError(e);
         }
     }
 
     private static void logError(Exception e) {
-        LOGGER.error(e.getMessage());
+        String message = e.getMessage();
+        if(message != null) {
+            LOGGER.log(Level.SEVERE, message, e);
+        } else {
+            LOGGER.log(Level.SEVERE, e.toString(), e);
+        }
     }
 }
