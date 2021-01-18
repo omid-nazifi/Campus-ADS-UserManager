@@ -15,5 +15,4 @@
 1. A menu appears in the console and you can continue with the numbers specified in the console 
 
 [![docker
-build](https://img.shields.io/docker/build/onazifi/campus-asd-usermanager)](https://cloud.docker.
-com/u/onazifi/repository/docker/onazifi/campus-asd-usermanager)
+build](https://img.shields.io/docker/build/onazifi/campus-asd-usermanager)](https://cloud.docker.com/u/onazifi/repository/docker/onazifi/campus-asd-usermanager)
